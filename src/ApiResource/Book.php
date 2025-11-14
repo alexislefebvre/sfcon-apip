@@ -7,6 +7,7 @@ namespace App\ApiResource;
 use ApiPlatform\Doctrine\Orm\State\Options;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\Entity\Book as BookEntity;
 use App\State\DiscountBookProcessor;
@@ -17,12 +18,17 @@ use Symfony\Component\ObjectMapper\Attribute\Map;
     operations: [
         new Get(uriTemplate: '/books/{id}', uriVariables: ['id']),
         new Post(uriTemplate: '/books', input: CreateBook::class),
-        new Post(
+        new Post( // RPC
             uriTemplate: '/books/{id}/discount',
+            uriVariables: ['id'],
             input: DiscountBook::class,
-            stateOptions: new Options(entityClass: BookEntity::class, handleLinks: [DiscountBook::class, 'handleLinks']),
             processor: DiscountBookProcessor::class,
             status: 200,
+        ),
+        new Patch(
+            uriTemplate: '/books/{id}',
+            uriVariables: ['id'],
+            input: BookPatch::class,
         ),
     ],
 )]

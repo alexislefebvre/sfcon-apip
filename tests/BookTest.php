@@ -89,6 +89,36 @@ class BookTest extends ApiTestCase
                 ],
             ],
         ]);
+
+        static::createClient()->request('GET', '/api/books?name=2');
+
+        static::assertResponseIsSuccessful();
+        static::assertJsonContains([
+            'totalItems' => 1,
+            'member' => [
+                [
+                    '@id' => '/api/books/2',
+                    'id' => 2,
+                    'name' => 'TITLE 2',
+                    'isbn' => '9780061964368',
+                ],
+            ],
+        ]);
+
+        static::createClient()->request('GET', '/api/books?isbn=9780061964368');
+
+        static::assertResponseIsSuccessful();
+        static::assertJsonContains([
+            'totalItems' => 1,
+            'member' => [
+                [
+                    '@id' => '/api/books/2',
+                    'id' => 2,
+                    'name' => 'TITLE 2',
+                    'isbn' => '9780061964368',
+                ],
+            ],
+        ]);
     }
 
     public function testCreateBook(): void
@@ -110,6 +140,42 @@ class BookTest extends ApiTestCase
             'id' => 1,
             'name' => 'TITLE',
             'description' => 'DESCRIPTION',
+            'isbn' => '9780061964367',
+            'price' => '1.00$',
+        ]);
+    }
+
+    public function testUpdateBook(): void
+    {
+        /** @var EntityManagerInterface $em */
+        $em = static::getContainer()->get(EntityManagerInterface::class);
+
+        $book = new BookEntity();
+        $book->title = 'TITLE';
+        $book->description = 'DESCRIPTION';
+        $book->isbn = '9780061964367';
+        $book->price = 100;
+
+        $em->persist($book);
+        $em->flush();
+
+        static::createClient()->request('PATCH', '/api/books/1', [
+            'headers' => ['Content-Type' => 'application/merge-patch+json'],
+            'json' => [
+                'name' => 'TITLE 2',
+                'description' => 'DESCRIPTION 2',
+                'isbn' => '9780061964368',
+                'price' => 200,
+            ],
+        ]);
+
+        static::assertResponseStatusCodeSame(200);
+        static::assertMatchesResourceItemJsonSchema(Book::class);
+        static::assertJsonContains([
+            '@id' => '/api/books/1',
+            'id' => 1,
+            'name' => 'TITLE 2',
+            'description' => 'DESCRIPTION 2',
             'isbn' => '9780061964367',
             'price' => '1.00$',
         ]);

@@ -49,7 +49,7 @@ class BookTest extends ApiTestCase
         static::createClient()->request('GET', '/api/books');
 
         static::assertResponseIsSuccessful();
-        static::assertMatchesResourceCollectionJsonSchema(GetBookCollection::class);
+        static::assertMatchesResourceCollectionJsonSchema(Book::class);
         static::assertJsonContains([
             'totalItems' => 2,
             'member' => [
@@ -61,7 +61,7 @@ class BookTest extends ApiTestCase
         static::createClient()->request('GET', '/api/books?name=2');
 
         static::assertResponseIsSuccessful();
-        static::assertMatchesResourceCollectionJsonSchema(GetBookCollection::class);
+        static::assertMatchesResourceCollectionJsonSchema(Book::class);
         static::assertJsonContains([
             'totalItems' => 1,
             'member' => [
@@ -72,7 +72,7 @@ class BookTest extends ApiTestCase
         static::createClient()->request('GET', '/api/books?isbn=9781794890268');
 
         static::assertResponseIsSuccessful();
-        static::assertMatchesResourceCollectionJsonSchema(GetBookCollection::class);
+        static::assertMatchesResourceCollectionJsonSchema(Book::class);
         static::assertJsonContains([
             'totalItems' => 1,
             'member' => [

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Dto;
+namespace App\Dto;
 
 use App\Entity\Book as BookEntity;
 use Symfony\Component\ObjectMapper\Attribute\Map;

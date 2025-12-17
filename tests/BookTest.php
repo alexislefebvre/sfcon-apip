@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Tests;
 
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
-use App\Api\Resource\Book;
 use App\Entity\Book as BookEntity;
+use App\ApiResource\Book;
 use Doctrine\ORM\EntityManagerInterface;
 
 final class BookTest extends ApiTestCase

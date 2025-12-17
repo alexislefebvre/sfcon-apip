@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Dto;
+namespace App\Dto;
 
 use App\Entity\Book as BookEntity;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\ObjectMapper\Attribute\Map;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[Map(target: BookEntity::class)]
 final class CreateBook

@@ -2,47 +2,28 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Resource;
+namespace App\ApiResource;
 
-use ApiPlatform\Doctrine\Orm\Filter\ExactFilter;
-use ApiPlatform\Doctrine\Orm\Filter\PartialSearchFilter;
 use ApiPlatform\Doctrine\Orm\State\Options;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
-use ApiPlatform\Metadata\QueryParameter;
-use App\Api\Dto\BookCollection;
-use App\Api\Dto\CreateBook;
-use App\Api\Dto\DiscountBook;
-use App\Api\Dto\UpdateBook;
+use App\Dto\CreateBook;
+use App\Dto\DiscountBook;
+use App\Dto\UpdateBook;
 use App\Entity\Book as BookEntity;
 use App\State\DiscountBookProcessor;
 use Symfony\Component\ObjectMapper\Attribute\Map;
-use Symfony\Component\Validator\Constraints\Isbn;
 
 #[ApiResource(
+    shortName: 'Book',
     stateOptions: new Options(entityClass: BookEntity::class),
     jsonStream: true,
     operations: [
         new Get(
             uriTemplate: '/books/{id}',
             uriVariables: ['id'],
-        ),
-        new GetCollection(
-            uriTemplate: '/books',
-            output: BookCollection::class,
-            parameters: [
-                'name' => new QueryParameter(
-                    property: 'title',
-                    filter: new PartialSearchFilter(),
-                ),
-                'isbn' => new QueryParameter(
-                    filter: new ExactFilter(),
-                    constraints: [new Isbn()],
-                ),
-            ],
         ),
         new Patch(
             uriTemplate: '/books/{id}',

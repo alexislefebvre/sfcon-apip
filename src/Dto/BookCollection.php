@@ -6,17 +6,17 @@ namespace App\Dto;
 
 use ApiPlatform\Doctrine\Orm\Filter\ExactFilter;
 use ApiPlatform\Doctrine\Orm\Filter\PartialSearchFilter;
-use ApiPlatform\Doctrine\Orm\State\Options;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\QueryParameter;
 use App\Entity\Book as BookEntity;
+use App\State\BookProvider;
 use Symfony\Component\ObjectMapper\Attribute\Map;
 use Symfony\Component\Validator\Constraints\Isbn;
 
 #[ApiResource(
     shortName: 'Book',
-    stateOptions: new Options(entityClass: BookEntity::class),
+    provider: BookProvider::class,
     jsonStream: true,
     operations: [
         new GetCollection(

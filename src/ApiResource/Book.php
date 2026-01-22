@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\ApiResource;
 
-use ApiPlatform\Doctrine\Orm\State\Options;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Patch;
@@ -13,12 +12,13 @@ use App\Dto\CreateBook;
 use App\Dto\DiscountBook;
 use App\Dto\UpdateBook;
 use App\Entity\Book as BookEntity;
+use App\State\BookProvider;
 use App\State\DiscountBookProcessor;
 use Symfony\Component\ObjectMapper\Attribute\Map;
 
 #[ApiResource(
     shortName: 'Book',
-    stateOptions: new Options(entityClass: BookEntity::class),
+    provider: BookProvider::class,
     jsonStream: true,
     operations: [
         new Get(
